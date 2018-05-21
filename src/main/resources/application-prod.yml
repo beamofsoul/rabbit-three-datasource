@@ -1,0 +1,63 @@
+debug: false
+
+server:
+  port: 80
+
+spring:
+  redis:
+    database: 11 # 正式库11
+    host: 10.0.54.87
+    port: 6379
+    password: HaiMan2017
+    timeout: 0
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+  cache:
+    redis:
+      time-to-live: 86400 # 86400 seconds equals a day
+  datasource:
+    primary:
+      type: com.zaxxer.hikari.HikariDataSource
+      jdbcUrl: jdbc:mysql://10.0.54.89:3306/moraydata_cloud_primary_01?characterEncoding=utf-8&useSSL=true&generateSimpleParameterMetadata=true
+      username: java.cloud
+      password: Moray12345
+      driver-class-name: com.mysql.jdbc.Driver
+      poolName: PrimaryDatabaseConnectionPool
+      maxLifetime: 1765000 #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
+      maximumPoolSize: 15 #连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
+      minimumIdle: 5 #连接池中允许的最小闲置连接数
+      connectionTimeout: 60000 # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+      idleTimeout: 600000 #一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
+    secondary:
+      type: com.zaxxer.hikari.HikariDataSource
+      jdbcUrl: jdbc:mysql://10.0.54.93:3306/haiman_test?characterEncoding=utf-8&useSSL=true&generateSimpleParameterMetadata=true
+      username: java.cloud
+      password: Moray12345
+      driver-class-name: com.mysql.jdbc.Driver
+      poolName: PrimaryDatabaseConnectionPool
+      maxLifetime: 1765000 #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
+      maximumPoolSize: 15 #连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
+      minimumIdle: 5 #连接池中允许的最小闲置连接数
+      connectionTimeout: 60000 # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+      idleTimeout: 600000 #一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      format-sql: true
+      use_sql_comments: true
+      use-new-id-generator-mappings: false 
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true # false
+  main:
+    banner-mode: "off"

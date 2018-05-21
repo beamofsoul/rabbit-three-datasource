@@ -1,0 +1,82 @@
+spring:
+  mvc:
+    static-path-pattern: /static/**
+  profiles:
+    active:
+      - prod
+
+swagger:
+  api:
+    title: Test-One Open API Documentation
+    description: 
+    version: 0.0.1-SNAPSHOT
+    author:
+      name: Mingshu Jian
+      url: https://github.com/beamofsoul/rabbit-three-datasource
+      email: beamofsoul@sina.com
+      
+logging:
+  config: classpath:logback.xml
+  
+  
+project:
+  base:
+    repository:
+      provider: com.moraydata.general.management.repository.BaseMultielementRepositoryFactory
+    security:
+      # Specifies the URLs to be required to login as the roles "adminRoles" matched 
+      adminRoleMatchers:
+       - /admin/**
+      # Any one of the roles to require for adminRoleMatchers
+      # Each of the roles should not start with "ROLE_" as this is automatically inserted
+      # 只有角色ADMIN 和 MANAGER 可以访问后台
+      adminRoles:
+        - ADMIN
+        - MANAGER
+      # Allows adding RequestMatcher instances that do not to be required to login
+      nonAuthenticatedMatchers:
+        - /**
+      # Specifies the URL to send users to if login is required
+      loginPage: /login
+      # Specifies where users will go after authenticating successfully
+      defaultLoginSuccessUrl: /
+      # true if the defaultSuccesUrl should be used after authentication despite
+      # if a protected page had been previously visited
+      alwaysUseDefaultSuccessUrl: true
+      # The URL that will invoke logout
+      logoutUrl: /logout
+      # The URL to redirect to after logout has occurred.
+      # The default is "/login?logout". 
+      defaultLogoutSuccessUrl: /login
+      # Controls the maximum number of sessions for a user.
+      # The default is to allow any number of users.
+      maximumSessions: 1
+      # If true, prevents a user from authenticating when the maximumSessions(int) has been reached.
+      # Otherwise (default), the user who authenticates is allowed access 
+      # and an existing user's session is expired. 
+      # The user's who's session is forcibly expired is sent to expiredUrl(String).
+      # The advantage of this approach is if a user accidentally does not log out,
+      # there is no need for an administrator to intervene or wait till their session expires.
+      maxSessionsPreventsLogin: false
+      # The URL to redirect to if a user tries to access a resource 
+      # and their session has been expired due to too many sessions for the current user. 
+      expiredUrl: /expired
+      # Allows specifying how long (in seconds) a token is valid for, set as one week, defualt is two weeks
+      tokenValiditySeconds: 604800
+      # The HTTP parameter used to indicate to remember the user at time of login.
+      rememberMeParameter: remember-me
+      # The name of cookie which store the token for remember me authentication.
+      # Defaults to 'remember-me'.
+      rememberMeCookieName: rabbit
+      # Allows adding RequestMatcher instances that should that Spring Security should ignore.
+      # Web Security provided by Spring Security (including the SecurityContext) 
+      # will not be available on HttpServletRequest that match.
+      # Typically the requests that are registered should be that of only static resources.
+      # For requests that are dynamic, consider mapping the request to allow all users instead. 
+      ignoringMatchers:
+        - /static/**
+        - /**/favicon.ico
+    oauth2:
+      enabled: true
+      resourceIds: test_one # 内容无所谓，但是数据库表oauth_client_details每条记录的resource_ids属性值必须与其一致，否则无法识别用户想要访问的资源
+      filterUrl: /open/** # 所有指向/open/**路径下资源的URL都将被要求进行认证，**通配符意味着任何形式
